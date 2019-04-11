@@ -8,6 +8,8 @@
 
 **项目的技术结构如下图所示：**
 
+![é¡¹ç®ææ¯ç"æ.png](https://github.com/noodou/seckill/blob/master/doc-material/md/assets/%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E7%BB%93%E6%9E%84.png?raw=true)
+
 ![](doc-material\md\assets\项目技术结构.png)
 
 **数据库设计如下图：**
