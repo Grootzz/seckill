@@ -2,8 +2,6 @@ package edu.uestc.access;
 
 import edu.uestc.domain.MiaoshaUser;
 
-import java.util.Queue;
-
 /**
  * 用于保存用户
  * 使用ThreadLocal保存用户，因为ThreadLocal是线程安全的，使用ThreadLocal可以保存当前线程持有的对象
