@@ -20,7 +20,7 @@
 - 秒杀订单表：`miaosha_order`
 - 订单表：`order_info`
 
-![æ´ä½æµç¨](https://raw.githubusercontent.com/qiurunze123/imageall/master/miaoshasql.png)
+![æ°æ®åºè®¾è®¡.png](https://github.com/Grootzz/seckill/blob/master/doc-material/md/assets/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1.png?raw=true)
 
 **秒杀场景下主要解决的问题：**
 
