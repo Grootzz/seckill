@@ -1,6 +1,6 @@
 package edu.uestc.dao;
 
-import edu.uestc.domain.MiaoshaGoods;
+import edu.uestc.domain.SeckillGoods;
 import edu.uestc.vo.GoodsVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,8 +39,8 @@ public interface GoodsDao {
      * <p>
      * c5: 增加库存判断 stock_count>0, 一次使得数据库不存在卖超问题
      *
-     * @param miaoshaGoods
+     * @param seckillGoods
      */
     @Update("UPDATE miaosha_goods SET stock_count = stock_count-1 WHERE goods_id=#{goodsId} AND stock_count > 0")
-    int reduceStack(MiaoshaGoods miaoshaGoods);
+    int reduceStack(SeckillGoods seckillGoods);
 }

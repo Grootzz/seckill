@@ -1,10 +1,8 @@
 package edu.uestc.service;
 
 import edu.uestc.dao.GoodsDao;
-import edu.uestc.domain.MiaoshaGoods;
+import edu.uestc.domain.SeckillGoods;
 import edu.uestc.vo.GoodsVo;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +43,9 @@ public class GoodsService {
      * @param goods
      */
     public boolean reduceStock(GoodsVo goods) {
-        MiaoshaGoods miaoshaGoods = new MiaoshaGoods();
-        miaoshaGoods.setGoodsId(goods.getId());// 秒杀商品的id和商品的id是一样的
-        int ret = goodsDao.reduceStack(miaoshaGoods);
+        SeckillGoods seckillGoods = new SeckillGoods();
+        seckillGoods.setGoodsId(goods.getId());// 秒杀商品的id和商品的id是一样的
+        int ret = goodsDao.reduceStack(seckillGoods);
         return ret > 0;
     }
 }

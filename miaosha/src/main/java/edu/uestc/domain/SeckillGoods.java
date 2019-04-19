@@ -3,7 +3,7 @@ package edu.uestc.domain;
 
 import java.util.Date;
 
-public class MiaoshaGoods {
+public class SeckillGoods {
 
     private Long id;
     private Long goodsId;
