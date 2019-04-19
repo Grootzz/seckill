@@ -1,6 +1,6 @@
 package edu.uestc.access;
 
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 
 /**
  * 用于保存用户
@@ -10,14 +10,14 @@ import edu.uestc.domain.MiaoshaUser;
 public class UserContext {
 
     // 保存用户的容器
-    private static ThreadLocal<MiaoshaUser> userHolder = new ThreadLocal<>();
+    private static ThreadLocal<SeckillUser> userHolder = new ThreadLocal<>();
 
-    public static void setUser(MiaoshaUser user) {
+    public static void setUser(SeckillUser user) {
 
         userHolder.set(user);
     }
 
-    public static MiaoshaUser getUser() {
+    public static SeckillUser getUser() {
         return userHolder.get();
     }
 }

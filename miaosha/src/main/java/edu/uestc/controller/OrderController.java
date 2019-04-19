@@ -3,7 +3,7 @@ package edu.uestc.controller;
 
 import edu.uestc.controller.result.CodeMsg;
 import edu.uestc.controller.result.Result;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.domain.OrderInfo;
 import edu.uestc.service.GoodsService;
 import edu.uestc.service.OrderService;
@@ -40,7 +40,7 @@ public class OrderController {
     @RequestMapping("/detail")
     @ResponseBody
     public Result<OrderDetailVo> orderInfo(Model model,
-                                           MiaoshaUser user,
+                                           SeckillUser user,
                                            @RequestParam("orderId") long orderId) {
 
         if (user == null) {

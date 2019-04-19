@@ -39,7 +39,7 @@
             <td th:text="${goods.goodsName}"></td>
             <td><img th:src="@{${goods.goodsImg}}" width="100" height="100"/></td>
             <td th:text="${goods.goodsPrice}"></td>
-            <td th:text="${goods.miaoshaPrice}" style="color: crimson"></td>
+            <td th:text="${goods.seckillPrice}" style="color: crimson"></td>
             <td th:text="${goods.stockCount}"></td>
             <td><a th:href="'/goods/to_detail/'+${goods.id}">详情</a></td>
             <!--增减一栏用于测试静态化详情页面-->

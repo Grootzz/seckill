@@ -2,8 +2,8 @@ package edu.uestc.service;
 
 
 import edu.uestc.controller.result.CodeMsg;
-import edu.uestc.dao.MiaoshaUserDao;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.dao.SeckillUserDao;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.exception.GlobalException;
 import edu.uestc.redis.MiaoshaUserKeyPrefix;
 import edu.uestc.redis.RedisService;
@@ -28,7 +28,7 @@ public class MiaoshaUserService {
     public static final String COOKIE_NAME_TOKEN = "token";
 
     @Autowired
-    MiaoshaUserDao miaoshaUserDao;
+    SeckillUserDao seckillUserDao;
     // 由于需要将一个cookie对应的用户存入第三方缓存中，这里用redis，所以需要引入redis serice
     @Autowired
     RedisService redisService;
@@ -50,7 +50,7 @@ public class MiaoshaUserService {
         String mobile = loginVo.getMobile();
         String password = loginVo.getPassword();
         // 判断手机号是否存在
-        MiaoshaUser user = this.getMiaoshaUserById(Long.parseLong(mobile));
+        SeckillUser user = this.getMiaoshaUserById(Long.parseLong(mobile));
         if (user == null)
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
 
@@ -85,16 +85,16 @@ public class MiaoshaUserService {
      * @param id
      * @return
      */
-    private MiaoshaUser getMiaoshaUserById(Long id) {
+    private SeckillUser getMiaoshaUserById(Long id) {
 
         // 1. 从redis中获取用户数据缓存
-        MiaoshaUser user = redisService.get(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id, MiaoshaUser.class);
+        SeckillUser user = redisService.get(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id, SeckillUser.class);
         if (user != null)
             return user;
 
         // 2. 如果缓存中没有用户数据，则将数据写入缓存
         // 先从数据库中取出数据
-        user = miaoshaUserDao.getById(id);
+        user = seckillUserDao.getById(id);
         // 然后将数据返回并将数据缓存在redis中
         if (user != null)
             redisService.set(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id, user);
@@ -102,17 +102,17 @@ public class MiaoshaUserService {
     }
 
     /**
-     * 根据token从redis中取出 MiaoshaUser 对象
+     * 根据token从redis中取出 SeckillUser 对象
      *
-     * @param response 在获取 MiaoshaUser 的同时，需要将新的cookie设置到 response 对象中
+     * @param response 在获取 SeckillUser 的同时，需要将新的cookie设置到 response 对象中
      * @param token    用于在redis中获取MiaoshaUser对象的key
      * @return
      */
-    public MiaoshaUser getMisaoshaUserByToken(HttpServletResponse response, String token) {
+    public SeckillUser getMisaoshaUserByToken(HttpServletResponse response, String token) {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        MiaoshaUser miaoshaUser = redisService.get(MiaoshaUserKeyPrefix.token, token, MiaoshaUser.class);
+        SeckillUser miaoshaUser = redisService.get(MiaoshaUserKeyPrefix.token, token, SeckillUser.class);
         // 在有效期内从redis获取到key之后，需要将key重新设置一下，从而达到延长有效期的效果
         if (miaoshaUser != null) {
             addCookie(response, token, miaoshaUser);
@@ -127,7 +127,7 @@ public class MiaoshaUserService {
      * @param token
      * @param user
      */
-    private void addCookie(HttpServletResponse response, String token, MiaoshaUser user) {
+    private void addCookie(HttpServletResponse response, String token, SeckillUser user) {
         redisService.set(MiaoshaUserKeyPrefix.token, token, user);
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
         cookie.setMaxAge(MiaoshaUserKeyPrefix.token.expireSeconds());
@@ -148,7 +148,7 @@ public class MiaoshaUserService {
      */
     public boolean updatePassword(String token, long id, String updatedPassword) {
         // 1. 从缓存或者数据库中取id对应的用户数据
-        MiaoshaUser user = this.getMiaoshaUserById(id);// 这一步的数据也有可能是从缓存中读取的数据
+        SeckillUser user = this.getMiaoshaUserById(id);// 这一步的数据也有可能是从缓存中读取的数据
         if (user == null) {
             // 如果用户数据不存在，则抛出异常
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
@@ -156,10 +156,10 @@ public class MiaoshaUserService {
 
         // 2. 如果用户存在，则更新数据
         // 更新数据库中的数据
-        MiaoshaUser updatedUser = new MiaoshaUser();
+        SeckillUser updatedUser = new SeckillUser();
         updatedUser.setId(id);
         updatedUser.setPassword(MD5Util.formPassToDbPass(updatedPassword, user.getSalt()));
-        miaoshaUserDao.updatePassword(updatedUser);
+        seckillUserDao.updatePassword(updatedUser);
         // 更新缓存中的数据（先删除，再添加）
         // 如果不删除，以前的用户数据仍然存在于缓存中，则通过以前的token依旧可以访问到用户之前的数据，这会造成信息泄露
         redisService.delete(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id);

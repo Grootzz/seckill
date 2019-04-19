@@ -1,6 +1,6 @@
 package edu.uestc.config;
 
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.service.MiaoshaUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         Class<?> parameterType = methodParameter.getParameterType();
-        return parameterType == MiaoshaUser.class;
+        return parameterType == SeckillUser.class;
     }
 
 

@@ -1,7 +1,7 @@
 package edu.uestc.controller;
 
 import edu.uestc.controller.result.Result;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.GoodsKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
@@ -67,7 +67,7 @@ public class GoodsListController {
     public String toList(HttpServletRequest request,
                          HttpServletResponse response,
                          Model model,
-                         MiaoshaUser user) {
+                         SeckillUser user) {
 
         model.addAttribute("user", user);
 
@@ -112,7 +112,7 @@ public class GoodsListController {
             HttpServletRequest request,
             HttpServletResponse response,
             Model model,
-            MiaoshaUser user,
+            SeckillUser user,
             @PathVariable("goodsId") long goodsId) {
 
         // 1. 根据商品id从redis中取详情数据的缓存
@@ -179,7 +179,7 @@ public class GoodsListController {
     @RequestMapping(value = "/to_detail_static/{goodsId}")// 注意这种写法
 //    @RequestMapping(value = "/to_detail/{goodsId}")// 注意这种写法
     @ResponseBody
-    public Result<GoodsDetailVo> toDetailStatic(MiaoshaUser user, @PathVariable("goodsId") long goodsId) {
+    public Result<GoodsDetailVo> toDetailStatic(SeckillUser user, @PathVariable("goodsId") long goodsId) {
 
         // 通过商品id再数据库查询
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);

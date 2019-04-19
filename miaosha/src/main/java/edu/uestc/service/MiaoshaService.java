@@ -1,7 +1,7 @@
 package edu.uestc.service;
 
-import edu.uestc.domain.MiaoshaOrder;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillOrder;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.domain.OrderInfo;
 import edu.uestc.redis.MiaoshaKeyPrefix;
 import edu.uestc.redis.RedisService;
@@ -46,7 +46,7 @@ public class MiaoshaService {
      * @return 生成的订单信息
      */
     @Transactional
-    public OrderInfo miaosha(MiaoshaUser user, GoodsVo goods) {
+    public OrderInfo miaosha(SeckillUser user, GoodsVo goods) {
         // 1. 减库存
         boolean success = goodsService.reduceStock(goods);
         if (!success) {
@@ -66,7 +66,7 @@ public class MiaoshaService {
      */
     public long getMiaoshaResult(Long userId, long goodsId) {
 
-        MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(userId, goodsId);
+        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(userId, goodsId);
         if (order != null) {//秒杀成功
             return order.getOrderId();
         } else {
@@ -87,7 +87,7 @@ public class MiaoshaService {
      * @param path
      * @return
      */
-    public boolean checkPath(MiaoshaUser user, long goodsId, String path) {
+    public boolean checkPath(SeckillUser user, long goodsId, String path) {
         if (user == null || path == null)
             return false;
         // 从redis中读取出秒杀的path变量是否为本次秒杀操作执行前写入redis中的path
@@ -102,7 +102,7 @@ public class MiaoshaService {
      * @param goodsId
      * @return
      */
-    public BufferedImage createVerifyCode(MiaoshaUser user, long goodsId) {
+    public BufferedImage createVerifyCode(SeckillUser user, long goodsId) {
         if (user == null || goodsId <= 0) {
             return null;
         }
@@ -185,7 +185,7 @@ public class MiaoshaService {
      * @param verifyCode
      * @return
      */
-    public boolean checkVerifyCode(MiaoshaUser user, long goodsId, int verifyCode) {
+    public boolean checkVerifyCode(SeckillUser user, long goodsId, int verifyCode) {
         if (user == null || goodsId <= 0) {
             return false;
         }
@@ -208,7 +208,7 @@ public class MiaoshaService {
      * @param goodsId
      * @return
      */
-    public String createMiaoshaPath(MiaoshaUser user, long goodsId) {
+    public String createMiaoshaPath(SeckillUser user, long goodsId) {
 
         if (user == null || goodsId <= 0) {
             return null;

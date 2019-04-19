@@ -22,7 +22,7 @@ public interface GoodsDao {
      *
      * @return
      */
-    @Select("SELECT g.*, mg.stock_count, mg.start_date, mg.end_date, mg.miaosha_price FROM miaosha_goods mg LEFT JOIN goods g ON mg.goods_id=g.id")
+    @Select("SELECT g.*, mg.stock_count, mg.start_date, mg.end_date, mg.seckill_price FROM seckill_goods mg LEFT JOIN goods g ON mg.goods_id=g.id")
     List<GoodsVo> listGoodsVo();
 
     /**
@@ -31,16 +31,16 @@ public interface GoodsDao {
      * @param goodsId
      * @return
      */
-    @Select("SELECT g.*, mg.stock_count, mg.start_date, mg.end_date, mg.miaosha_price FROM miaosha_goods mg LEFT JOIN goods g ON mg.goods_id=g.id where g.id = #{goodsId}")
+    @Select("SELECT g.*, mg.stock_count, mg.start_date, mg.end_date, mg.seckill_price FROM seckill_goods mg LEFT JOIN goods g ON mg.goods_id=g.id where g.id = #{goodsId}")
     GoodsVo getGoodsVoByGoodsId(@Param("goodsId") Long goodsId);
 
     /**
-     * 减少miaosha_order中的库存
+     * 减少seckill_order中的库存
      * <p>
      * c5: 增加库存判断 stock_count>0, 一次使得数据库不存在卖超问题
      *
      * @param seckillGoods
      */
-    @Update("UPDATE miaosha_goods SET stock_count = stock_count-1 WHERE goods_id=#{goodsId} AND stock_count > 0")
+    @Update("UPDATE seckill_goods SET stock_count = stock_count-1 WHERE goods_id=#{goodsId} AND stock_count > 0")
     int reduceStack(SeckillGoods seckillGoods);
 }

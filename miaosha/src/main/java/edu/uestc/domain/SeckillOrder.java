@@ -1,7 +1,7 @@
 package edu.uestc.domain;
 
 
-public class MiaoshaOrder {
+public class SeckillOrder {
 
     private Long id;
     private Long userId;

@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 秒杀用户表
  */
-public class MiaoshaUser {
+public class SeckillUser {
 
     private Long id;
     private String nickname;
@@ -84,7 +84,7 @@ public class MiaoshaUser {
 
     @Override
     public String toString() {
-        return "MiaoshaUser{" +
+        return "SeckillUser{" +
                 "id=" + id +
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +

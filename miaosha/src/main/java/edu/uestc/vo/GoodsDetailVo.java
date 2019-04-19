@@ -1,6 +1,6 @@
 package edu.uestc.vo;
 
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 
 /**
  * 商品详情
@@ -12,7 +12,7 @@ public class GoodsDetailVo {
     private int miaoshaStatus = 0;
     private int remainSeconds = 0;
     private GoodsVo goods;
-    private MiaoshaUser user;
+    private SeckillUser user;
 
     public int getMiaoshaStatus() {
         return miaoshaStatus;
@@ -38,11 +38,11 @@ public class GoodsDetailVo {
         this.goods = goods;
     }
 
-    public MiaoshaUser getUser() {
+    public SeckillUser getUser() {
         return user;
     }
 
-    public void setUser(MiaoshaUser user) {
+    public void setUser(SeckillUser user) {
         this.user = user;
     }
 }

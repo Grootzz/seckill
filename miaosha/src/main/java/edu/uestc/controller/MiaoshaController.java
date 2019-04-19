@@ -3,8 +3,8 @@ package edu.uestc.controller;
 import edu.uestc.access.AccessLimit;
 import edu.uestc.controller.result.CodeMsg;
 import edu.uestc.controller.result.Result;
-import edu.uestc.domain.MiaoshaOrder;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillOrder;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.domain.OrderInfo;
 import edu.uestc.rabbitmq.MQSender;
 import edu.uestc.rabbitmq.MiaoshaMessage;
@@ -64,7 +64,7 @@ public class MiaoshaController implements InitializingBean {
      * @return 执行秒杀后的跳转
      */
     @RequestMapping("/do_miaosha")
-    public String doMiaosha(Model model, MiaoshaUser user, @RequestParam("goodsId") long goodsId) {
+    public String doMiaosha(Model model, SeckillUser user, @RequestParam("goodsId") long goodsId) {
 
         model.addAttribute("user", user);
         // 1. 如果用户为空，则返回登录界面
@@ -82,7 +82,7 @@ public class MiaoshaController implements InitializingBean {
         }
 
         // 2.2 判断用户是否已经完成秒杀，如果没有秒杀成功，继续执行
-        MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
+        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (order != null) {
             model.addAttribute("errmsg", CodeMsg.REPEATE_MIAOSHA.getMsg());
             return "miaosha_fail";
@@ -113,7 +113,7 @@ public class MiaoshaController implements InitializingBean {
     // {path}为客户端回传的path，最初也是有服务端产生的
     @RequestMapping(value = "/{path}/do_miaosha_static", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Integer> doMiaoshaStatic(Model model, MiaoshaUser user,
+    public Result<Integer> doMiaoshaStatic(Model model, SeckillUser user,
                                            @RequestParam("goodsId") long goodsId,
                                            @PathVariable("path") String path) {
 
@@ -140,7 +140,7 @@ public class MiaoshaController implements InitializingBean {
         }
 
         // 判断是否重复秒杀
-        MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
+        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (order != null) {
             return Result.error(CodeMsg.REPEATE_MIAOSHA);
         }
@@ -165,7 +165,7 @@ public class MiaoshaController implements InitializingBean {
      */
     @RequestMapping(value = "/result", method = RequestMethod.GET)
     @ResponseBody
-    public Result<Long> miaoshaResult(Model model, MiaoshaUser user,
+    public Result<Long> miaoshaResult(Model model, SeckillUser user,
                                       @RequestParam("goodsId") long goodsId) {
         model.addAttribute("user", user);
         if (user == null) {
@@ -189,7 +189,7 @@ public class MiaoshaController implements InitializingBean {
     @AccessLimit(seconds = 5, maxAccessCount = 5, needLogin = true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody
-    public Result<String> getMiaoshaPath(Model model, MiaoshaUser user,
+    public Result<String> getMiaoshaPath(Model model, SeckillUser user,
                                          @RequestParam("goodsId") long goodsId,
                                          @RequestParam(value = "verifyCode", defaultValue = "0") int verifyCode
     ) {
@@ -225,7 +225,7 @@ public class MiaoshaController implements InitializingBean {
      */
     @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
     @ResponseBody
-    public Result<String> getMiaoshaVerifyCode(HttpServletResponse response, MiaoshaUser user,
+    public Result<String> getMiaoshaVerifyCode(HttpServletResponse response, SeckillUser user,
                                                @RequestParam("goodsId") long goodsId) {
         if (user == null)
             return Result.error(CodeMsg.SESSION_ERROR);

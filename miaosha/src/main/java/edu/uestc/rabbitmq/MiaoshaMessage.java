@@ -1,7 +1,7 @@
 package edu.uestc.rabbitmq;
 
 
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 
 /**
  * 在MQ中传递的秒杀信息
@@ -9,15 +9,15 @@ import edu.uestc.domain.MiaoshaUser;
  */
 public class MiaoshaMessage {
 
-    private MiaoshaUser user;
+    private SeckillUser user;
 
     private long goodsId;
 
-    public MiaoshaUser getUser() {
+    public SeckillUser getUser() {
         return user;
     }
 
-    public void setUser(MiaoshaUser user) {
+    public void setUser(SeckillUser user) {
         this.user = user;
     }
 

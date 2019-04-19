@@ -7,7 +7,7 @@ public class SeckillGoods {
 
     private Long id;
     private Long goodsId;
-    private Double miaoshaPrice;// 这个字段的值和Goods对象中的goodsPrice字段是一样的？
+    private Double seckillPrice;// 这个字段的值和Goods对象中的goodsPrice字段是一样的？
     private Integer stockCount;
     private Date startDate;
     private Date endDate;
@@ -28,12 +28,12 @@ public class SeckillGoods {
         this.goodsId = goodsId;
     }
 
-    public Double getMiaoshaPrice() {
-        return miaoshaPrice;
+    public Double getSeckillPrice() {
+        return seckillPrice;
     }
 
-    public void setMiaoshaPrice(Double miaoshaPrice) {
-        this.miaoshaPrice = miaoshaPrice;
+    public void setSeckillPrice(Double seckillPrice) {
+        this.seckillPrice = seckillPrice;
     }
 
     public Integer getStockCount() {

@@ -2,7 +2,7 @@ package edu.uestc.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -23,7 +23,7 @@ public class UserUtil {
 
     public static void createUser(int count) throws IOException, SQLException, ClassNotFoundException {
 
-        List<MiaoshaUser> users = new ArrayList<>(count);
+        List<SeckillUser> users = new ArrayList<>(count);
 
         // 生成用户信息
         generateMiaoshaUserList(count, users);
@@ -46,7 +46,7 @@ public class UserUtil {
 
         for (int i = 0; i < users.size(); i++) {
             // 模拟用户登录
-            MiaoshaUser user = users.get(i);
+            SeckillUser user = users.get(i);
             URL url = new URL(urlString);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
@@ -87,9 +87,9 @@ public class UserUtil {
      * @param count 生成的用户数量
      * @param users 用于存储用户的list
      */
-    private static void generateMiaoshaUserList(int count, List<MiaoshaUser> users) {
+    private static void generateMiaoshaUserList(int count, List<SeckillUser> users) {
         for (int i = 0; i < count; i++) {
-            MiaoshaUser user = new MiaoshaUser();
+            SeckillUser user = new SeckillUser();
             user.setId(19800000000L + i);// 模拟11位的手机号码
             user.setLoginCount(1);
             user.setNickname("user-" + i);
@@ -107,13 +107,13 @@ public class UserUtil {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    private static void insertMiaoshaUserToDB(List<MiaoshaUser> users) throws ClassNotFoundException, SQLException {
+    private static void insertMiaoshaUserToDB(List<SeckillUser> users) throws ClassNotFoundException, SQLException {
         System.out.println("start create user...");
         Connection conn = DBUtil.getConn();
         String sql = "INSERT INTO miaosha_user(login_count, nickname, register_date, salt, password, id)VALUES(?,?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         for (int i = 0; i < users.size(); i++) {
-            MiaoshaUser user = users.get(i);
+            SeckillUser user = users.get(i);
             pstmt.setInt(1, user.getLoginCount());
             pstmt.setString(2, user.getNickname());
             pstmt.setTimestamp(3, new Timestamp(user.getRegisterDate().getTime()));

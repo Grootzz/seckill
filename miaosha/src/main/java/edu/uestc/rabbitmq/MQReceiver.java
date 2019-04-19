@@ -1,7 +1,7 @@
 package edu.uestc.rabbitmq;
 
-import edu.uestc.domain.MiaoshaOrder;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillOrder;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
 import edu.uestc.service.MiaoshaService;
@@ -65,7 +65,7 @@ public class MQReceiver {
         logger.info("MQ: message: " + message);
         MiaoshaMessage miaoshaMessage = RedisService.stringToBean(message, MiaoshaMessage.class);
         // 获取秒杀用户信息与商品id
-        MiaoshaUser user = miaoshaMessage.getUser();
+        SeckillUser user = miaoshaMessage.getUser();
         long goodsId = miaoshaMessage.getGoodsId();
 
         // 获取商品的库存
@@ -75,7 +75,7 @@ public class MQReceiver {
             return;
 
         // 判断是否已经秒杀到了
-        MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
+        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (order != null)
             return;
 

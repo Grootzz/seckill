@@ -1,7 +1,7 @@
 package edu.uestc.controller;
 
 import edu.uestc.controller.result.Result;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class UserController {
      */
     @RequestMapping("/user_info")
     @ResponseBody
-    public Result<MiaoshaUser> userInfo(MiaoshaUser user) {
+    public Result<SeckillUser> userInfo(SeckillUser user) {
         logger.info(user.toString());
         return Result.success(user);
     }

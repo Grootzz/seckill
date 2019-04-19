@@ -3,7 +3,7 @@ package edu.uestc.access;
 import com.alibaba.fastjson.JSON;
 import edu.uestc.controller.result.CodeMsg;
 import edu.uestc.controller.result.Result;
-import edu.uestc.domain.MiaoshaUser;
+import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.AccessKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.MiaoshaUserService;
@@ -46,7 +46,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 
         // 指明拦截的是方法
         if (handler instanceof HandlerMethod) {
-            MiaoshaUser user = this.getUser(request, response);// 获取用户对象
+            SeckillUser user = this.getUser(request, response);// 获取用户对象
             UserContext.setUser(user);// 保存用户到ThreadLocal，这样，同一个线程访问的是同一个用户
             HandlerMethod hm = (HandlerMethod) handler;
             // 获取标注了@AccessLimit的方法，没有注解，则直接返回
@@ -113,7 +113,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
      * @param response
      * @return MiaoshaUser对象
      */
-    private MiaoshaUser getUser(HttpServletRequest request, HttpServletResponse response) {
+    private SeckillUser getUser(HttpServletRequest request, HttpServletResponse response) {
 
         // 从请求中获取token
         String paramToken = request.getParameter(MiaoshaUserService.COOKIE_NAME_TOKEN);
