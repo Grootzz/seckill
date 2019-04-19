@@ -1,18 +1,20 @@
 # 创建秒杀场景下的表
 # 包含以下几个表：
-#   1. 秒杀用户表 miaosha_user
+#   1. 秒杀用户表 seckill_user
 #   2. 商品表 goods
-#   3. 参与秒杀的商品表 miaosha_goods
-#   4. 秒杀订单表 miaosha_order
+#   3. 参与秒杀的商品表 seckill_goods
+#   4. 秒杀订单表 seckill_order
 #   5. 订单表 order_info
 
-USE miaosha;
+CREATE DATABASE seckill;
+
+USE seckill;
 # *****************************************************************************************
 
 # 创建秒杀用户表
 # 秒杀用户表
-DROP TABLE IF EXISTS `miaosha_user`;
-CREATE TABLE `miaosha_user` (
+DROP TABLE IF EXISTS `seckill_user`;
+CREATE TABLE `seckill_user` (
   id              BIGINT(20)   NOT NULL
   COMMENT '用户id，手机号码',
   nickname        VARCHAR(255) NOT NULL
@@ -33,7 +35,7 @@ CREATE TABLE `miaosha_user` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 # 插入一条记录（未经过MD5的密码为000000, 两次MD5后的密码为记录中的密码，两次MD5的salt一样）
-INSERT INTO miaosha_user (id, nickname, password, salt)
+INSERT INTO seckill_user (id, nickname, password, salt)
 VALUES (18342390420, 'Noodle', '5e7b3a9754c2777f96174d4ccb980d23', '1a2b3c4d');
 
 # 创建商品表
@@ -69,13 +71,13 @@ INSERT INTO `goods` VALUES (1, 'iphoneX', 'Apple iPhone X (A1865) 64GB 银色 �
 
 # *****************************************************************************************
 # 秒杀商品表
-DROP TABLE IF EXISTS `miaosha_goods`;
-CREATE TABLE `miaosha_goods` (
+DROP TABLE IF EXISTS `seckill_goods`;
+CREATE TABLE `seckill_goods` (
   `id`            BIGINT(20) NOT NULL AUTO_INCREMENT
   COMMENT '秒杀的商品表',
   `goods_id`      BIGINT(20)          DEFAULT NULL
   COMMENT '商品Id',
-  `miaosha_price` DECIMAL(10, 2)      DEFAULT '0.00'
+  `seckill_price` DECIMAL(10, 2)      DEFAULT '0.00'
   COMMENT '秒杀价',
   `stock_count`   INT(11)             DEFAULT NULL
   COMMENT '库存数量',
@@ -90,15 +92,15 @@ CREATE TABLE `miaosha_goods` (
   DEFAULT CHARSET = utf8mb4;
 
 # 插入两条记录
-INSERT INTO `miaosha_goods` VALUES (1, 1, 0.01, 9, '2017-12-04 21:51:23', '2017-12-31 21:51:27'),
+INSERT INTO `seckill_goods` VALUES (1, 1, 0.01, 9, '2017-12-04 21:51:23', '2017-12-31 21:51:27'),
   (2, 2, 0.01, 9, '2017-12-04 21:40:14', '2017-12-31 14:00:24'),
   (3, 3, 0.01, 9, '2017-12-04 21:40:14', '2017-12-31 14:00:24'),
   (4, 4, 0.01, 9, '2017-12-04 21:40:14', '2017-12-31 14:00:24');
 
 # *****************************************************************************************
 # 秒杀订单表
-DROP TABLE IF EXISTS `miaosha_order`;
-CREATE TABLE `miaosha_order` (
+DROP TABLE IF EXISTS `seckill_order`;
+CREATE TABLE `seckill_order` (
   `id`       BIGINT(20) NOT NULL AUTO_INCREMENT,
   `user_id`  BIGINT(20)          DEFAULT NULL
   COMMENT '用户ID',

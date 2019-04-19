@@ -9,11 +9,11 @@ import edu.uestc.domain.MiaoshaUser;
  */
 public class UserContext {
 
-
     // 保存用户的容器
     private static ThreadLocal<MiaoshaUser> userHolder = new ThreadLocal<>();
 
     public static void setUser(MiaoshaUser user) {
+
         userHolder.set(user);
     }
 

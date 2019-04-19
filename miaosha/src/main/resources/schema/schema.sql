@@ -1,6 +1,6 @@
-CREATE DATABASE miaosha;
+CREATE DATABASE seckill;
 
-USE miaosha;
+USE seckill;
 # ---------------------------------------------------------------------
 # 用户表
 CREATE TABLE user (
@@ -13,7 +13,7 @@ INSERT INTO user VALUES (NULL, 'ffl');
 INSERT INTO user VALUES (NULL, 'ff2');
 # ---------------------------------------------------------------------
 # 秒杀用户表
-CREATE TABLE miaosha_user (
+CREATE TABLE seckill_user (
   id              BIGINT(20)   NOT NULL
   COMMENT '用户id，手机号码',
   nickname        VARCHAR(255) NOT NULL
