@@ -3,7 +3,7 @@ package edu.uestc.service;
 import edu.uestc.domain.SeckillOrder;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.domain.OrderInfo;
-import edu.uestc.redis.MiaoshaKeyPrefix;
+import edu.uestc.redis.SeckillKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.util.MD5Util;
 import edu.uestc.util.UUIDUtil;
@@ -46,7 +46,7 @@ public class SeckillService {
      * @return 生成的订单信息
      */
     @Transactional
-    public OrderInfo miaosha(SeckillUser user, GoodsVo goods) {
+    public OrderInfo seckill(SeckillUser user, GoodsVo goods) {
         // 1. 减库存
         boolean success = goodsService.reduceStock(goods);
         if (!success) {
@@ -64,9 +64,9 @@ public class SeckillService {
      * @param goodsId
      * @return
      */
-    public long getMiaoshaResult(Long userId, long goodsId) {
+    public long getSeckillResult(Long userId, long goodsId) {
 
-        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(userId, goodsId);
+        SeckillOrder order = orderService.getSeckillOrderByUserIdAndGoodsId(userId, goodsId);
         if (order != null) {//秒杀成功
             return order.getOrderId();
         } else {
@@ -91,7 +91,7 @@ public class SeckillService {
         if (user == null || path == null)
             return false;
         // 从redis中读取出秒杀的path变量是否为本次秒杀操作执行前写入redis中的path
-        String oldPath = redisService.get(MiaoshaKeyPrefix.miaoshaPath, "" + user.getId() + "_" + goodsId, String.class);
+        String oldPath = redisService.get(SeckillKeyPrefix.seckillPath, "" + user.getId() + "_" + goodsId, String.class);
         return path.equals(oldPath);
     }
 
@@ -137,7 +137,7 @@ public class SeckillService {
 
         // 计算表达式值，并把把验证码值存到redis中
         int expResult = calc(verifyCode);
-        redisService.set(MiaoshaKeyPrefix.miaoshaVerifyCode, user.getId() + "," + goodsId, expResult);
+        redisService.set(SeckillKeyPrefix.seckillVerifyCode, user.getId() + "," + goodsId, expResult);
         //输出图片
         return image;
     }
@@ -191,13 +191,13 @@ public class SeckillService {
         }
 
         // 从redis中获取验证码计算结果
-        Integer oldCode = redisService.get(MiaoshaKeyPrefix.miaoshaVerifyCode, user.getId() + "," + goodsId, Integer.class);
+        Integer oldCode = redisService.get(SeckillKeyPrefix.seckillVerifyCode, user.getId() + "," + goodsId, Integer.class);
         if (oldCode == null || oldCode - verifyCode != 0) {// !!!!!!
             return false;
         }
 
         // 如果校验不成功，则说明校验码过期
-        redisService.delete(MiaoshaKeyPrefix.miaoshaVerifyCode, user.getId() + "," + goodsId);
+        redisService.delete(SeckillKeyPrefix.seckillVerifyCode, user.getId() + "," + goodsId);
         return true;
     }
 
@@ -208,7 +208,7 @@ public class SeckillService {
      * @param goodsId
      * @return
      */
-    public String createMiaoshaPath(SeckillUser user, long goodsId) {
+    public String createSeckillPath(SeckillUser user, long goodsId) {
 
         if (user == null || goodsId <= 0) {
             return null;
@@ -217,15 +217,15 @@ public class SeckillService {
         // 随机生成秒杀地址
         String path = MD5Util.md5(UUIDUtil.uuid() + "123456");
         // 将随机生成的秒杀地址存储在redis中（保证不同的用户和不同商品的秒杀地址是不一样的）
-        redisService.set(MiaoshaKeyPrefix.miaoshaPath, "" + user.getId() + "_" + goodsId, path);
+        redisService.set(SeckillKeyPrefix.seckillPath, "" + user.getId() + "_" + goodsId, path);
         return path;
     }
 
     private boolean getGoodsOver(long goodsId) {
-        return redisService.exists(MiaoshaKeyPrefix.isGoodsOver, "" + goodsId);
+        return redisService.exists(SeckillKeyPrefix.isGoodsOver, "" + goodsId);
     }
 
     public void setGoodsOver(long goodsId) {
-        redisService.set(MiaoshaKeyPrefix.isGoodsOver, "" + goodsId, true);
+        redisService.set(SeckillKeyPrefix.isGoodsOver, "" + goodsId, true);
     }
 }

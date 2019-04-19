@@ -14,6 +14,6 @@ public class OrderKeyPrefix extends BaseKeyPrefix {
     }
 
     // 秒杀订单信息的前缀
-    public static OrderKeyPrefix getMiaoshaOrderByUidGid = new OrderKeyPrefix("getMiaoshaOrderByUidGid");
+    public static OrderKeyPrefix getSeckillOrderByUidGid = new OrderKeyPrefix("getSeckillOrderByUidGid");
 
 }

@@ -9,7 +9,7 @@ public class CodeMsg {
     public static CodeMsg SERVER_ERROR = new CodeMsg(500100, "服务端异常");
     public static CodeMsg BIND_ERROR = new CodeMsg(500101, "参数校验异常：%s");
     public static CodeMsg REQUEST_ILLEGAL = new CodeMsg(500102, "请求非法");
-    public static CodeMsg ACCESS_LIMIT_REACHED= new CodeMsg(500104, "访问太频繁！");
+    public static CodeMsg ACCESS_LIMIT_REACHED = new CodeMsg(500104, "访问太频繁！");
 
     // 登录模块 5002XX
     public static CodeMsg SESSION_ERROR = new CodeMsg(500210, "Session不存在或者已经失效");
@@ -28,9 +28,9 @@ public class CodeMsg {
     public static CodeMsg ORDER_NOT_EXIST = new CodeMsg(500400, "订单不存在");
 
     //秒杀模块 5005XX
-    public static CodeMsg MIAOSHA_OVER = new CodeMsg(500500, "商品已经秒杀完毕");
-    public static CodeMsg REPEATE_MIAOSHA = new CodeMsg(500501, "不能重复秒杀");
-    public static CodeMsg MIAOSHA_FAIL = new CodeMsg(500502, "秒杀失败");
+    public static CodeMsg SECKILL_OVER = new CodeMsg(500500, "商品已经秒杀完毕");
+    public static CodeMsg REPEATE_SECKILL = new CodeMsg(500501, "不能重复秒杀");
+    public static CodeMsg SECKILL_FAIL = new CodeMsg(500502, "秒杀失败");
 
     /**
      * 构造器定义为private是为了防止controller直接new

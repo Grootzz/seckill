@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    SeckillUserService miaoshaUserService;
+    SeckillUserService seckillUserService;
 
     /**
      * 当请求参数为MiaoshaUser时，使用这个解析器处理
@@ -70,7 +70,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         // 判断是哪种方式返回的token，并由该种方式获取token（cookie）
         String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
         // 通过token就可以在redis中查出该token对应的用户对象
-        return miaoshaUserService.getMisaoshaUserByToken(response, token);
+        return seckillUserService.getMisaoshaUserByToken(response, token);
     }
 
     /**

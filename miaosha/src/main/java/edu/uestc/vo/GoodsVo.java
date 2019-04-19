@@ -6,23 +6,23 @@ import java.util.Date;
 
 /**
  * 商品信息（并且包含商品的秒杀信息）
- * 商品信息和商品的秒杀信息是存储在两个表中的（goods和miaosha_goods）
- * 继承Goods便具有了goods表的信息，再额外添加上miaosha_goods的信息即可
+ * 商品信息和商品的秒杀信息是存储在两个表中的（goods和seckill_goods）
+ * 继承Goods便具有了goods表的信息，再额外添加上seckill_goods的信息即可
  */
-public class GoodsVo extends Goods{
+public class GoodsVo extends Goods {
 
-    /*只包含了部分miaosha_goods表的信息*/
-    private Double miaoshaPrice;
+    /*只包含了部分seckill_goods表的信息*/
+    private Double seckillPrice;
     private Integer stockCount;
     private Date startDate;
     private Date endDate;
 
-    public Double getMiaoshaPrice() {
-        return miaoshaPrice;
+    public Double getSeckillPrice() {
+        return seckillPrice;
     }
 
-    public void setMiaoshaPrice(Double miaoshaPrice) {
-        this.miaoshaPrice = miaoshaPrice;
+    public void setSeckillPrice(Double seckillPrice) {
+        this.seckillPrice = seckillPrice;
     }
 
     public Integer getStockCount() {

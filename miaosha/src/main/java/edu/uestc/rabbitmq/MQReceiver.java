@@ -60,13 +60,13 @@ public class MQReceiver {
      *
      * @param message
      */
-    @RabbitListener(queues = MQConfig.MIAOSHA_QUEUE)
+    @RabbitListener(queues = MQConfig.SECKILL_QUEUE)
     public void receiveMiaoshaInfo(String message) {
         logger.info("MQ: message: " + message);
-        MiaoshaMessage miaoshaMessage = RedisService.stringToBean(message, MiaoshaMessage.class);
+        SeckillMessage seckillMessage = RedisService.stringToBean(message, SeckillMessage.class);
         // 获取秒杀用户信息与商品id
-        SeckillUser user = miaoshaMessage.getUser();
-        long goodsId = miaoshaMessage.getGoodsId();
+        SeckillUser user = seckillMessage.getUser();
+        long goodsId = seckillMessage.getGoodsId();
 
         // 获取商品的库存
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
@@ -75,12 +75,12 @@ public class MQReceiver {
             return;
 
         // 判断是否已经秒杀到了
-        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
+        SeckillOrder order = orderService.getSeckillOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (order != null)
             return;
 
         // 减库存 下订单 写入秒杀订单
-        seckillService.miaosha(user, goods);
+        seckillService.seckill(user, goods);
     }
 
 }

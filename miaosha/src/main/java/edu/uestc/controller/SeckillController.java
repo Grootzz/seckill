@@ -7,7 +7,7 @@ import edu.uestc.domain.SeckillOrder;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.domain.OrderInfo;
 import edu.uestc.rabbitmq.MQSender;
-import edu.uestc.rabbitmq.MiaoshaMessage;
+import edu.uestc.rabbitmq.SeckillMessage;
 import edu.uestc.redis.GoodsKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
@@ -77,18 +77,18 @@ public class SeckillController implements InitializingBean {
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
         int stockCount = goods.getStockCount();// 获取秒杀商品的库存
         if (stockCount <= 0) {
-            model.addAttribute("errmsg", CodeMsg.MIAOSHA_OVER.getMsg());
+            model.addAttribute("errmsg", CodeMsg.SECKILL_OVER.getMsg());
             return "miaosha_fail";
         }
 
         // 2.2 判断用户是否已经完成秒杀，如果没有秒杀成功，继续执行
-        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
+        SeckillOrder order = orderService.getSeckillOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (order != null) {
-            model.addAttribute("errmsg", CodeMsg.REPEATE_MIAOSHA.getMsg());
+            model.addAttribute("errmsg", CodeMsg.REPEATE_SECKILL.getMsg());
             return "miaosha_fail";
         }
         // 2.3 完成秒杀操作：减库存，下订单，写入秒杀订单
-        OrderInfo orderInfo = seckillService.miaosha(user, goods);
+        OrderInfo orderInfo = seckillService.seckill(user, goods);
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("goods", goods);
         return "order_detail";
@@ -130,23 +130,23 @@ public class SeckillController implements InitializingBean {
         // 通过内存标记，减少对redis的访问，秒杀未结束才继续访问redis
         Boolean over = localOverMap.get(goodsId);
         if (over)
-            return Result.error(CodeMsg.MIAOSHA_OVER);
+            return Result.error(CodeMsg.SECKILL_OVER);
 
         // 预减库存
-        Long stock = redisService.decr(GoodsKeyPrefix.miaoshaGoodsStockPrefix, "" + goodsId);
+        Long stock = redisService.decr(GoodsKeyPrefix.seckillGoodsStockPrefix, "" + goodsId);
         if (stock < 0) {
             localOverMap.put(goodsId, true);// 秒杀结束。标记该商品已经秒杀结束
-            return Result.error(CodeMsg.MIAOSHA_OVER);
+            return Result.error(CodeMsg.SECKILL_OVER);
         }
 
         // 判断是否重复秒杀
-        SeckillOrder order = orderService.getMiaoshaOrderByUserIdAndGoodsId(user.getId(), goodsId);
+        SeckillOrder order = orderService.getSeckillOrderByUserIdAndGoodsId(user.getId(), goodsId);
         if (order != null) {
-            return Result.error(CodeMsg.REPEATE_MIAOSHA);
+            return Result.error(CodeMsg.REPEATE_SECKILL);
         }
 
         // 商品有库存且用户为秒杀商品，则将秒杀请求放入MQ
-        MiaoshaMessage message = new MiaoshaMessage();
+        SeckillMessage message = new SeckillMessage();
         message.setUser(user);
         message.setGoodsId(goodsId);
 
@@ -171,7 +171,7 @@ public class SeckillController implements InitializingBean {
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
-        long result = seckillService.getMiaoshaResult(user.getId(), goodsId);
+        long result = seckillService.getSeckillResult(user.getId(), goodsId);
         return Result.success(result);
     }
 
@@ -208,14 +208,14 @@ public class SeckillController implements InitializingBean {
             return Result.error(CodeMsg.REQUEST_ILLEGAL);// 检验不通过，请求非法
 
         // 检验通过，获取秒杀路径
-        String path = seckillService.createMiaoshaPath(user, goodsId);
+        String path = seckillService.createSeckillPath(user, goodsId);
         // 向客户端回传随机生成的秒杀地址
         return Result.success(path);
     }
 
 
     /**
-     * goods_detail.htm: $("#verifyCodeImg").attr("src", "/miaosha/verifyCode?goodsId=" + $("#goodsId").val());
+     * goods_detail.htm: $("#verifyCodeImg").attr("src", "/seckill/verifyCode?goodsId=" + $("#goodsId").val());
      * 使用HttpServletResponse的输出流返回客户端异步获取的验证码（异步获取的代码如上所示）
      *
      * @param response
@@ -241,7 +241,7 @@ public class SeckillController implements InitializingBean {
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(CodeMsg.MIAOSHA_FAIL);
+            return Result.error(CodeMsg.SECKILL_FAIL);
         }
     }
 
@@ -262,7 +262,7 @@ public class SeckillController implements InitializingBean {
 
         // 将商品的库存信息存储在redis中
         for (GoodsVo good : goods) {
-            redisService.set(GoodsKeyPrefix.miaoshaGoodsStockPrefix, "" + good.getId(), good.getStockCount());
+            redisService.set(GoodsKeyPrefix.seckillGoodsStockPrefix, "" + good.getId(), good.getStockCount());
             localOverMap.put(good.getId(), false);// 在系统启动时，标记库存不为空
         }
     }

@@ -75,10 +75,10 @@ public class MQSender {
      *
      * @param message
      */
-    public void sendMiaoshaMessage(MiaoshaMessage message) {
+    public void sendMiaoshaMessage(SeckillMessage message) {
         String msg = RedisService.beanToString(message);
         logger.info("MQ send message: " + msg);
         // 第一个参数为消息队列名，第二个参数为发送的消息
-        amqpTemplate.convertAndSend(MQConfig.MIAOSHA_QUEUE, msg);
+        amqpTemplate.convertAndSend(MQConfig.SECKILL_QUEUE, msg);
     }
 }

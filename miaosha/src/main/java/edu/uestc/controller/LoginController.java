@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class LoginController {
 
     @Autowired
-    SeckillUserService miaoshaUserService;
+    SeckillUserService seckillUserService;
 
 
     // 日志记录：Logger是由slf4j接口规范创建的，对象有具体的实现类创建
@@ -63,7 +63,7 @@ public class LoginController {
 // //-------------------------------------------------------
 
         // 登录
-        miaoshaUserService.login(response, loginVo);
+        seckillUserService.login(response, loginVo);
         return Result.success(true);
     }
 
@@ -78,7 +78,7 @@ public class LoginController {
     @ResponseBody
     public Result<String> createToken(HttpServletResponse response, @Valid LoginVo loginVo) {
         logger.info(loginVo.toString());
-        String token = miaoshaUserService.login(response, loginVo);
+        String token = seckillUserService.login(response, loginVo);
         return Result.success(token);
     }
 

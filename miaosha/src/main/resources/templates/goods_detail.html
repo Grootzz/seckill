@@ -48,10 +48,10 @@
             <td id="miaoshaTip">
                 <input type="hidden" id="remainSeconds" th:value="${remainSeconds}"/>
                 <!--倒计时-->
-                <span th:if="${miaoshaStatus eq 0}">秒杀倒计时：<span id="countDown"
+                <span th:if="${seckillStatus eq 0}">秒杀倒计时：<span id="countDown"
                                                                 th:text="${remainSeconds}"></span>秒</span>
-                <span th:if="${miaoshaStatus eq 1}">秒杀进行中</span>
-                <span th:if="${miaoshaStatus eq 2}">秒杀已结束</span>
+                <span th:if="${seckillStatus eq 1}">秒杀进行中</span>
+                <span th:if="${seckillStatus eq 2}">秒杀已结束</span>
             </td>
             <td>
                 <form id="miaoshaForm" method="post" action="/miaosha/do_miaosha">

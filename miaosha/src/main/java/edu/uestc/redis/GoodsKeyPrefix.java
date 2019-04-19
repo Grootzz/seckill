@@ -16,5 +16,5 @@ public class GoodsKeyPrefix extends BaseKeyPrefix {
     public static GoodsKeyPrefix goodsDetailKeyPrefix = new GoodsKeyPrefix(60, "goodsDetail");
 
     // 缓存在redis中的商品库存的前缀(缓存过期时间为永久)
-    public static GoodsKeyPrefix miaoshaGoodsStockPrefix = new GoodsKeyPrefix(0, "goodsStock");
+    public static GoodsKeyPrefix seckillGoodsStockPrefix = new GoodsKeyPrefix(0, "goodsStock");
 }

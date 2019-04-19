@@ -19,7 +19,7 @@ public interface OrderDao {
      * @return 秒杀订单信息
      */
     @Select("SELECT * FROM seckill_order WHERE user_id=#{userId} AND goods_id=#{goodsId}")
-    SeckillOrder getMiaoshaOrderByUserIdAndGoodsId(@Param("userId") Long userId, @Param("goodsId") long goodsId);
+    SeckillOrder getSeckillOrderByUserIdAndGoodsId(@Param("userId") Long userId, @Param("goodsId") long goodsId);
 
     /**
      * 将订单信息插入seckill_order表中
@@ -39,7 +39,7 @@ public interface OrderDao {
      * @param seckillOrder 秒杀订单
      */
     @Insert("INSERT INTO seckill_order(user_id, order_id, goods_id) VALUES (#{userId}, #{orderId}, #{goodsId})")
-    void insertMiaoshaOrder(SeckillOrder seckillOrder);
+    void insertSeckillOrder(SeckillOrder seckillOrder);
 
     /**
      * 获取订单信息

@@ -32,15 +32,15 @@ public class OrderService {
      * @param goodsId
      * @return 秒杀订单信息
      */
-    public SeckillOrder getMiaoshaOrderByUserIdAndGoodsId(Long userId, long goodsId) {
+    public SeckillOrder getSeckillOrderByUserIdAndGoodsId(Long userId, long goodsId) {
 
         // 从redis中取缓存，减少数据库的访问
-        SeckillOrder seckillOrder = redisService.get(OrderKeyPrefix.getMiaoshaOrderByUidGid, ":" + userId + "_" + goodsId, SeckillOrder.class);
+        SeckillOrder seckillOrder = redisService.get(OrderKeyPrefix.getSeckillOrderByUidGid, ":" + userId + "_" + goodsId, SeckillOrder.class);
         if (seckillOrder != null) {
             return seckillOrder;
         }
 
-        return orderDao.getMiaoshaOrderByUserIdAndGoodsId(userId, goodsId);
+        return orderDao.getSeckillOrderByUserIdAndGoodsId(userId, goodsId);
 //        return seckillOrder;
     }
 
@@ -74,7 +74,7 @@ public class OrderService {
         orderInfo.setGoodsCount(1);// 订单中商品的数量
         orderInfo.setGoodsId(goods.getId());
         orderInfo.setGoodsName(goods.getGoodsName());
-        orderInfo.setGoodsPrice(goods.getMiaoshaPrice());// 秒杀价格
+        orderInfo.setGoodsPrice(goods.getSeckillPrice());// 秒杀价格
         orderInfo.setOrderChannel(1);
         orderInfo.setStatus(0);
         orderInfo.setUserId(user.getId());
@@ -86,10 +86,10 @@ public class OrderService {
         seckillOrder.setOrderId(orderInfo.getId());
         seckillOrder.setUserId(user.getId());
         // 将秒杀订单插入miaosha_order表中
-        orderDao.insertMiaoshaOrder(seckillOrder);
+        orderDao.insertSeckillOrder(seckillOrder);
 
         // 将秒杀订单信息存储于redis中
-        redisService.set(OrderKeyPrefix.getMiaoshaOrderByUidGid, ":" + user.getId() + "_" + goods.getId(), seckillOrder);
+        redisService.set(OrderKeyPrefix.getSeckillOrderByUidGid, ":" + user.getId() + "_" + goods.getId(), seckillOrder);
 
         return orderInfo;
     }

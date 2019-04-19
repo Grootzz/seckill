@@ -36,7 +36,7 @@ public class UserUtil {
         // 模拟用户登录，生成token
         System.out.println("start to login...");
         String urlString = "http://localhost:8080/login/create_token";
-        File file = new File("E:\\JavaProject\\Web\\miaosha\\tokens.txt");
+        File file = new File("E:\\JavaProject\\Web\\seckill\\tokens.txt");
         if (file.exists()) {
             file.delete();
         }

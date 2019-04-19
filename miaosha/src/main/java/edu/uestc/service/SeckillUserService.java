@@ -5,7 +5,7 @@ import edu.uestc.controller.result.CodeMsg;
 import edu.uestc.dao.SeckillUserDao;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.exception.GlobalException;
-import edu.uestc.redis.MiaoshaUserKeyPrefix;
+import edu.uestc.redis.SeckillUserKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.util.MD5Util;
 import edu.uestc.util.UUIDUtil;
@@ -66,10 +66,10 @@ public class SeckillUserService {
         // 生成cookie
         String token = UUIDUtil.uuid();
         // 每次访问都会生成一个新的session存储于redis和反馈给客户端，一个session对应存储一个user对象
-        redisService.set(MiaoshaUserKeyPrefix.token, token, user);
+        redisService.set(SeckillUserKeyPrefix.token, token, user);
         // 将token写入cookie中, 然后传给客户端（一个cookie对应一个用户，这里将这个cookie的用户信息写入redis中）
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
-        cookie.setMaxAge(MiaoshaUserKeyPrefix.token.expireSeconds());// 保持与redis中的session一致
+        cookie.setMaxAge(SeckillUserKeyPrefix.token.expireSeconds());// 保持与redis中的session一致
         cookie.setPath("/");
         response.addCookie(cookie);
 
@@ -88,7 +88,7 @@ public class SeckillUserService {
     private SeckillUser getMiaoshaUserById(Long id) {
 
         // 1. 从redis中获取用户数据缓存
-        SeckillUser user = redisService.get(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id, SeckillUser.class);
+        SeckillUser user = redisService.get(SeckillUserKeyPrefix.getSeckillUserById, "" + id, SeckillUser.class);
         if (user != null)
             return user;
 
@@ -97,7 +97,7 @@ public class SeckillUserService {
         user = seckillUserDao.getById(id);
         // 然后将数据返回并将数据缓存在redis中
         if (user != null)
-            redisService.set(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id, user);
+            redisService.set(SeckillUserKeyPrefix.getSeckillUserById, "" + id, user);
         return user;
     }
 
@@ -112,7 +112,7 @@ public class SeckillUserService {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        SeckillUser miaoshaUser = redisService.get(MiaoshaUserKeyPrefix.token, token, SeckillUser.class);
+        SeckillUser miaoshaUser = redisService.get(SeckillUserKeyPrefix.token, token, SeckillUser.class);
         // 在有效期内从redis获取到key之后，需要将key重新设置一下，从而达到延长有效期的效果
         if (miaoshaUser != null) {
             addCookie(response, token, miaoshaUser);
@@ -128,9 +128,9 @@ public class SeckillUserService {
      * @param user
      */
     private void addCookie(HttpServletResponse response, String token, SeckillUser user) {
-        redisService.set(MiaoshaUserKeyPrefix.token, token, user);
+        redisService.set(SeckillUserKeyPrefix.token, token, user);
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
-        cookie.setMaxAge(MiaoshaUserKeyPrefix.token.expireSeconds());
+        cookie.setMaxAge(SeckillUserKeyPrefix.token.expireSeconds());
         cookie.setPath("/");
         response.addCookie(cookie);
     }
@@ -162,9 +162,9 @@ public class SeckillUserService {
         seckillUserDao.updatePassword(updatedUser);
         // 更新缓存中的数据（先删除，再添加）
         // 如果不删除，以前的用户数据仍然存在于缓存中，则通过以前的token依旧可以访问到用户之前的数据，这会造成信息泄露
-        redisService.delete(MiaoshaUserKeyPrefix.getMiaoshaUserById, "" + id);
+        redisService.delete(SeckillUserKeyPrefix.getSeckillUserById, "" + id);
         user.setPassword(updatedUser.getPassword());
-        redisService.set(MiaoshaUserKeyPrefix.token, token, user);// 为新的用户数据重新生成缓存
+        redisService.set(SeckillUserKeyPrefix.token, token, user);// 为新的用户数据重新生成缓存
         return true;
     }
 }
