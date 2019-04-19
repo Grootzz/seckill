@@ -1,7 +1,7 @@
 package edu.uestc.config;
 
 import edu.uestc.domain.SeckillUser;
-import edu.uestc.service.MiaoshaUserService;
+import edu.uestc.service.SeckillUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    MiaoshaUserService miaoshaUserService;
+    SeckillUserService miaoshaUserService;
 
     /**
      * 当请求参数为MiaoshaUser时，使用这个解析器处理
@@ -60,8 +60,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
 
         // 从请求对象中获取token（token可能有两种方式从客户端返回，1：通过url的参数，2：通过set-Cookie字段）
-        String paramToken = request.getParameter(MiaoshaUserService.COOKIE_NAME_TOKEN);
-        String cookieToken = getCookieValue(request, MiaoshaUserService.COOKIE_NAME_TOKEN);
+        String paramToken = request.getParameter(SeckillUserService.COOKIE_NAME_TOKEN);
+        String cookieToken = getCookieValue(request, SeckillUserService.COOKIE_NAME_TOKEN);
 
         if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
             return null;

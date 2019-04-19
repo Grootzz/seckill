@@ -6,7 +6,7 @@ import edu.uestc.controller.result.Result;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.AccessKeyPrefix;
 import edu.uestc.redis.RedisService;
-import edu.uestc.service.MiaoshaUserService;
+import edu.uestc.service.SeckillUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.io.OutputStream;
 public class AccessInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    MiaoshaUserService userService;
+    SeckillUserService userService;
 
     @Autowired
     RedisService redisService;
@@ -116,8 +116,8 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
     private SeckillUser getUser(HttpServletRequest request, HttpServletResponse response) {
 
         // 从请求中获取token
-        String paramToken = request.getParameter(MiaoshaUserService.COOKIE_NAME_TOKEN);
-        String cookieToken = getCookieValue(request, MiaoshaUserService.COOKIE_NAME_TOKEN);
+        String paramToken = request.getParameter(SeckillUserService.COOKIE_NAME_TOKEN);
+        String cookieToken = getCookieValue(request, SeckillUserService.COOKIE_NAME_TOKEN);
         if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
             return null;
         }

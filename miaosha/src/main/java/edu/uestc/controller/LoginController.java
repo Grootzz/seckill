@@ -1,13 +1,8 @@
 package edu.uestc.controller;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
-import edu.uestc.controller.result.CodeMsg;
 import edu.uestc.controller.result.Result;
-import edu.uestc.service.MiaoshaUserService;
-import edu.uestc.service.UserService;
-import edu.uestc.util.ValidatorUtil;
+import edu.uestc.service.SeckillUserService;
 import edu.uestc.vo.LoginVo;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +22,7 @@ import javax.validation.Valid;
 public class LoginController {
 
     @Autowired
-    MiaoshaUserService miaoshaUserService;
+    SeckillUserService miaoshaUserService;
 
 
     // 日志记录：Logger是由slf4j接口规范创建的，对象有具体的实现类创建

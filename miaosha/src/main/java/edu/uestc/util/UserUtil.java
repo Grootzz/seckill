@@ -21,7 +21,7 @@ import java.util.List;
 public class UserUtil {
     static String PASSWORD = "000000";
 
-    public static void createUser(int count) throws IOException, SQLException, ClassNotFoundException {
+    public static void createUser(int count) throws IOException {
 
         List<SeckillUser> users = new ArrayList<>(count);
 
@@ -30,7 +30,7 @@ public class UserUtil {
 
         // 将用户信息插入数据库，以便在后面模拟用户登录时可以找到该用户，从而可以生成token返会给客户端，然后保存到文件中用于压测
         // 首次生成数据库信息的时候需要调用这个方法，非首次需要注释掉
-        // insertMiaoshaUserToDB(users);
+        // insertSeckillUserToDB(users);
 
 
         // 模拟用户登录，生成token
@@ -107,7 +107,7 @@ public class UserUtil {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    private static void insertMiaoshaUserToDB(List<SeckillUser> users) throws ClassNotFoundException, SQLException {
+    private static void insertSeckillUserToDB(List<SeckillUser> users) throws ClassNotFoundException, SQLException {
         System.out.println("start create user...");
         Connection conn = DBUtil.getConn();
         String sql = "INSERT INTO miaosha_user(login_count, nickname, register_date, salt, password, id)VALUES(?,?,?,?,?,?)";
@@ -128,7 +128,7 @@ public class UserUtil {
         System.out.println("insert to db done!");
     }
 
-    public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
         createUser(5000);
     }
 

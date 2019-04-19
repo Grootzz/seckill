@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * c5: 缓存更新套路 http://blog.csdn.net/tTU1EvLDeLFq5btqiK/article/details/78693323
  */
 @Service
-public class MiaoshaUserService {
+public class SeckillUserService {
 
     public static final String COOKIE_NAME_TOKEN = "token";
 

@@ -11,7 +11,7 @@ import edu.uestc.rabbitmq.MiaoshaMessage;
 import edu.uestc.redis.GoodsKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
-import edu.uestc.service.MiaoshaService;
+import edu.uestc.service.SeckillService;
 import edu.uestc.service.OrderService;
 import edu.uestc.vo.GoodsVo;
 import org.springframework.beans.factory.InitializingBean;
@@ -36,14 +36,14 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/miaosha")
-public class MiaoshaController implements InitializingBean {
+public class SeckillController implements InitializingBean {
 
     @Autowired
     GoodsService goodsService;
     @Autowired
     OrderService orderService;
     @Autowired
-    MiaoshaService miaoshaService;
+    SeckillService seckillService;
     @Autowired
     RedisService redisService;
     @Autowired
@@ -88,7 +88,7 @@ public class MiaoshaController implements InitializingBean {
             return "miaosha_fail";
         }
         // 2.3 完成秒杀操作：减库存，下订单，写入秒杀订单
-        OrderInfo orderInfo = miaoshaService.miaosha(user, goods);
+        OrderInfo orderInfo = seckillService.miaosha(user, goods);
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("goods", goods);
         return "order_detail";
@@ -123,7 +123,7 @@ public class MiaoshaController implements InitializingBean {
             return Result.error(CodeMsg.SESSION_ERROR);
 
         // c6: 验证path是否正确
-        boolean check = miaoshaService.checkPath(user, goodsId, path);
+        boolean check = seckillService.checkPath(user, goodsId, path);
         if (!check)
             return Result.error(CodeMsg.REQUEST_ILLEGAL);// 请求非法
 
@@ -171,7 +171,7 @@ public class MiaoshaController implements InitializingBean {
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
-        long result = miaoshaService.getMiaoshaResult(user.getId(), goodsId);
+        long result = seckillService.getMiaoshaResult(user.getId(), goodsId);
         return Result.success(result);
     }
 
@@ -203,12 +203,12 @@ public class MiaoshaController implements InitializingBean {
         }
 
         // 校验验证码
-        boolean check = miaoshaService.checkVerifyCode(user, goodsId, verifyCode);
+        boolean check = seckillService.checkVerifyCode(user, goodsId, verifyCode);
         if (!check)
             return Result.error(CodeMsg.REQUEST_ILLEGAL);// 检验不通过，请求非法
 
         // 检验通过，获取秒杀路径
-        String path = miaoshaService.createMiaoshaPath(user, goodsId);
+        String path = seckillService.createMiaoshaPath(user, goodsId);
         // 向客户端回传随机生成的秒杀地址
         return Result.success(path);
     }
@@ -232,7 +232,7 @@ public class MiaoshaController implements InitializingBean {
 
         // 创建验证码
         try {
-            BufferedImage image = miaoshaService.createVerifyCode(user, goodsId);
+            BufferedImage image = seckillService.createVerifyCode(user, goodsId);
             ServletOutputStream out = response.getOutputStream();
             // 将图片写入到resp对象中
             ImageIO.write(image, "JPEG", out);

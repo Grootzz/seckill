@@ -5,7 +5,7 @@ import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.GoodsKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
-import edu.uestc.service.MiaoshaUserService;
+import edu.uestc.service.SeckillUserService;
 import edu.uestc.vo.GoodsDetailVo;
 import edu.uestc.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ import java.util.List;
 public class GoodsListController {
 
     @Autowired
-    MiaoshaUserService miaoshaUserService;
+    SeckillUserService miaoshaUserService;
 
     @Autowired
     GoodsService goodsService;

@@ -4,7 +4,7 @@ import edu.uestc.domain.SeckillOrder;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
-import edu.uestc.service.MiaoshaService;
+import edu.uestc.service.SeckillService;
 import edu.uestc.service.OrderService;
 import edu.uestc.vo.GoodsVo;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class MQReceiver {
     OrderService orderService;
 
     @Autowired
-    MiaoshaService miaoshaService;
+    SeckillService seckillService;
 
     //    @RabbitHandler
     @RabbitListener(queues = {MQConfig.QUEUE})
@@ -80,7 +80,7 @@ public class MQReceiver {
             return;
 
         // 减库存 下订单 写入秒杀订单
-        miaoshaService.miaosha(user, goods);
+        seckillService.miaosha(user, goods);
     }
 
 }

@@ -22,7 +22,7 @@ import java.util.Random;
  * 秒杀业务处理
  */
 @Service
-public class MiaoshaService {
+public class SeckillService {
 
     @Autowired
     GoodsService goodsService;
