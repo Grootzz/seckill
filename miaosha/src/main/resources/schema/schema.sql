@@ -1,3 +1,5 @@
+
+
 CREATE DATABASE seckill;
 
 USE seckill;
