@@ -11,7 +11,7 @@
     </properties>
 
     <groupId>edu.uestc</groupId>
-    <artifactId>miaosha</artifactId>
+    <artifactId>seckill</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <parent>
