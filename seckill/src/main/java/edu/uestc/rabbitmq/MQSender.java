@@ -69,7 +69,6 @@ public class MQSender {
         amqpTemplate.convertAndSend(MQConfig.HEADERS_EXCHANGE, "", obj);
     }
 
-
     /**
      * 将用户秒杀信息投递到MQ中（使用direct模式的exchange）
      *

@@ -103,6 +103,7 @@ public class SeckillService {
      * @return
      */
     public BufferedImage createVerifyCode(SeckillUser user, long goodsId) {
+
         if (user == null || goodsId <= 0) {
             return null;
         }

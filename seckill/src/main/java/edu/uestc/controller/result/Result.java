@@ -10,6 +10,7 @@ public class Result<T> {
 
     /**
      * 定义为private是为了在防止在controller中直接new
+     *
      * @param data
      */
     private Result(T data) {
@@ -27,6 +28,7 @@ public class Result<T> {
 
     /**
      * 只有get没有set，是为了防止在controller使用set对结果修改，从而达到一个更好的封装效果
+     *
      * @return
      */
     public int getCode() {
@@ -44,6 +46,7 @@ public class Result<T> {
 
     /**
      * 成功时候的调用返回结果
+     *
      * @param data
      * @return
      */

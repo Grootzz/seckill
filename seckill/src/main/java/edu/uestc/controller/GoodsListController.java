@@ -58,8 +58,8 @@ public class GoodsListController {
      *
      * @param request
      * @param response
-     * @param model       响应的资源文件
-     * @param user 通过自定义参数解析器UserArgumentResolver解析的 SeckillUser 对象
+     * @param model    响应的资源文件
+     * @param user     通过自定义参数解析器UserArgumentResolver解析的 SeckillUser 对象
      * @return
      */
     @RequestMapping(value = "/to_list", produces = "text/html")// produces表明：这个请求会返回text/html媒体类型的数据

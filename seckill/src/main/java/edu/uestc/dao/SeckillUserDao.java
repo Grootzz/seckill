@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.nio.Buffer;
+
 /**
  * 秒杀用户表seckill_user的SQl Mapper
  */

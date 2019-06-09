@@ -21,8 +21,6 @@ public class UserController {
     // 日志记录：Logger是由slf4j接口规范创建的，对象有具体的实现类创建
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-
-
     /**
      * 返回用户信息
      *
