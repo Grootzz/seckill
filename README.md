@@ -32,6 +32,8 @@
 - 信息队列
 - 接口安全
 
+> 本项目的分布式改造版本：<https://github.com/Grootzz/dis-seckill>
+
 ## 快速启动
 
 1. 第一步；克隆仓库到本地
