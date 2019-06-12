@@ -55,6 +55,8 @@
    java -jar /target seckill-1.0-SNAPSHOT.jar
    ```
 
+访问入口：<http://localhost:8080/login/to_login>
+
 初始账号/密码：`18342390420/000000`。
 
 ## 数据库设计 
