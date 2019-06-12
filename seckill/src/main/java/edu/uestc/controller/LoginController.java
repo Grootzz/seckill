@@ -51,17 +51,6 @@ public class LoginController {
     public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
         logger.info(loginVo.toString());// 打印接收的表单数据
 
-//         参数校验（没有使用@Valid对参数校验时的参数校验方式, 使用时注释掉这段，没有使用时需要取消注释）
-//        String mobile = loginVo.getMobile();
-//        String password = loginVo.getPassword();
-//        if (StringUtils.isEmpty(password)) {
-//            return Result.error(CodeMsg.PASSWORD_EMPTY);
-//        }
-//
-//        if (!ValidatorUtil.isMobile(mobile))
-//            return Result.error(CodeMsg.MOBILE_ERROR);
-// //-------------------------------------------------------
-
         // 登录
         seckillUserService.login(response, loginVo);
         return Result.success(true);
